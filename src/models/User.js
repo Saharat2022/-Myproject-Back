@@ -16,7 +16,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^(?=.*\d)(?=.*[A-Z])[a-zA-Z0-9!#$%&?]{6,20}$/,
+          // is: /(?=.*d)(?=.*[A-Z])[a-zA-Z0-9!#$%&?]{6,20}$/,
+          is: /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{6,}/,
+          notEmpty: true,
         },
       },
       firstName: {
@@ -42,10 +44,9 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       profileImage: DataTypes.STRING,
-      tel: {
+      phone: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
+        allowNull: true,
       },
       role: {
         type: DataTypes.ENUM(User_role_one, User_role_two),

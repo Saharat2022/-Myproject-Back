@@ -1,10 +1,12 @@
 // const { sequelize } = require("./models");
-// sequelize.sync();
+// // sequelize.drop();
+// sequelize.sync({ alter: true });
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 
+const authRoute = require("./routes/authRoute");
 const notFound = require("./middlewares.js/notFound");
 const error = require("./middlewares.js/error");
 const app = express();
@@ -17,6 +19,8 @@ if ((process.env.NODE_ENV = "development")) {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use("/auth", authRoute);
 
 app.use(notFound);
 app.use(error);
