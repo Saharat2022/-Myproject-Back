@@ -22,9 +22,11 @@ exports.register = async (req, res, next) => {
       phone,
     } = req.body;
 
-    if (!username) {
-      throw new AppError("username is require", 400);
-    }
+    // if (!username) {
+    //   // next(new AppError (....)) = วิ่งเข้าหา catct
+    //   //err = new AppError("username is require", 400)
+    //   throw new AppError("username is require", 400);
+    // }
     if (!password) {
       throw new AppError("password is require", 400);
     }
@@ -43,9 +45,6 @@ exports.register = async (req, res, next) => {
     if (!firstName || !lastName) {
       throw new AppError("firstname or lastname is require", 400);
     }
-    if (!phone) {
-      throw new AppError("phone is require", 400);
-    }
     if (!email) {
       throw new AppError("email is require", 400);
     }
@@ -53,7 +52,7 @@ exports.register = async (req, res, next) => {
     const isPhone = validator.isMobilePhone(phone + "");
     if (isEmail && isPhone) {
       const hashedPassword = await bcrypt.hash(password, 10);
-
+      //validate SQL before insert into table
       const user = await User.create({
         username,
         password: hashedPassword,
@@ -65,10 +64,11 @@ exports.register = async (req, res, next) => {
       const token = gentoken({ id: user.id });
       res.status(201).json({ token });
     } else {
-      throw new AppError("email or phone is valid format");
+      throw new AppError("email or phone is valid format and require");
     }
   } catch (err) {
-    console.log("88888");
+    console.log("catch errrrr");
+    console.log(err);
     next(err);
   }
 };

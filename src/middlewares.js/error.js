@@ -1,13 +1,15 @@
 module.exports = (err, req, res, next) => {
-  console.log("555");
-  console.log(err);
+  // console.log("555");
+  // console.log(err);
   //   ชั้น โมเดล
   if (
     err.name === "SequelizeValidationError" ||
     err.name === "SequelizeUniqueContraintError"
   ) {
-    console.log(err);
+    // console.log(err);
     err.statusCode = 400;
+    //คนอ่านจะได้อ่านรู้เรื่อง
+    err.message = err.errors[0].message;
   }
 
   res.status(err.statusCode || 500).json({ message: err.message });
