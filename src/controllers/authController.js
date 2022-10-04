@@ -78,24 +78,30 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
-    //select * from users where username = username
+    //protect bcypt string
     if (typeof username !== "string" || typeof password !== "string") {
       throw new AppError("username or password is invalid", 400);
     }
+    //select * from users where username = username
     const user = await User.findOne({ where: { username } });
     if (!user) {
       throw new AppError("username or password is invalid", 400);
     }
     console.log("user", user);
+    //password must be string
     const isCorrect = await bcrypt.compare(password, user.password);
     if (!isCorrect) {
       throw new AppError("username or password is invalid", 400);
     }
 
     const token = gentoken({ id: user.id });
-    //200 = complete
+    //200 = select complete
     res.status(200).json({ token });
   } catch (err) {
     next(err);
   }
+};
+
+exports.getMe = (req, res, next) => {
+  res.status(200).json({ user: req.user });
 };
