@@ -61,7 +61,9 @@ exports.register = async (req, res, next) => {
         email,
         phone,
       });
+      console.log(user);
       const token = gentoken({ id: user.id });
+      //201 = create complete
       res.status(201).json({ token });
     } else {
       throw new AppError("email or phone is valid format and require");
@@ -69,6 +71,31 @@ exports.register = async (req, res, next) => {
   } catch (err) {
     console.log("catch errrrr");
     console.log(err);
+    next(err);
+  }
+};
+
+exports.login = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    //select * from users where username = username
+    if (typeof username !== "string" || typeof password !== "string") {
+      throw new AppError("username or password is invalid", 400);
+    }
+    const user = await User.findOne({ where: { username } });
+    if (!user) {
+      throw new AppError("username or password is invalid", 400);
+    }
+    console.log("user", user);
+    const isCorrect = await bcrypt.compare(password, user.password);
+    if (!isCorrect) {
+      throw new AppError("username or password is invalid", 400);
+    }
+
+    const token = gentoken({ id: user.id });
+    //200 = complete
+    res.status(200).json({ token });
+  } catch (err) {
     next(err);
   }
 };

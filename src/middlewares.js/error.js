@@ -4,7 +4,7 @@ module.exports = (err, req, res, next) => {
   //   ชั้น โมเดล
   if (
     err.name === "SequelizeValidationError" ||
-    err.name === "SequelizeUniqueContraintError"
+    err.name === "SequelizeUniqueConstraintError"
   ) {
     // console.log(err);
     err.statusCode = 400;
