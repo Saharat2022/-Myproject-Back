@@ -87,7 +87,7 @@ exports.login = async (req, res, next) => {
     if (!user) {
       throw new AppError("username or password is invalid", 400);
     }
-    console.log("user", user);
+    // console.log("user", user);
     //password must be string
     const isCorrect = await bcrypt.compare(password, user.password);
     if (!isCorrect) {

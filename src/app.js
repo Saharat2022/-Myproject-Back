@@ -7,6 +7,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 const authRoute = require("./routes/authRoute");
+const userRoute = require("./routes/userRoute");
 const notFound = require("./middlewares.js/notFound");
 const error = require("./middlewares.js/error");
 const app = express();
@@ -17,10 +18,12 @@ if ((process.env.NODE_ENV = "development")) {
 }
 //cors = ให้รับข้อมูลโดเมนไหนก็ได้มาหลังบ้าน
 app.use(cors());
+//STRING
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("", authRoute);
+app.use("/", authRoute);
+app.use("/users", userRoute);
 
 app.use(notFound);
 app.use(error);

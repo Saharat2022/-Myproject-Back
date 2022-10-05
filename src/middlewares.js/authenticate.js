@@ -5,6 +5,7 @@ const { User } = require("../models");
 module.exports = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
+    console.log(authorization);
     if (!authorization || !authorization.startsWith("Bearer")) {
       // throw new AppError = บังคับให้ error จะวิ่งไปที่ เออเร่อทันที
       throw new AppError("unauthenticated", 401);
