@@ -1,6 +1,6 @@
 const multer = require("multer");
 
-//return {} ,ระบุตำเเหน่งที่เก็บไฟลเเละชื่อไฟลใหม่
+//return {} ,โหลดมาจาก req เเล้วจะให้เกบไหน ระบุตำเเหน่งที่เก็บไฟลเเละชื่อไฟลใหม่
 //cb มีพารามิเตอรื2 (ตัวเก็บเออเรอ, pathที่จะเก็บ)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
