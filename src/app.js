@@ -8,6 +8,7 @@ const morgan = require("morgan");
 
 const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRoute");
+const adminRoute = require("./routes/adminRoute");
 const notFound = require("./middlewares.js/notFound");
 const error = require("./middlewares.js/error");
 const app = express();
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/", authRoute);
 app.use("/users", userRoute);
+app.use("/admin", adminRoute);
 
 app.use(notFound);
 app.use(error);

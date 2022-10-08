@@ -1,6 +1,7 @@
 const cloudinary = require("../config/cloudinary");
 
 exports.upload = async (path, publicId) => {
+  console.log("upload");
   const option = {
     use_filename: true, //คงชื่อชื่อไฟล์รูปที่เราอัพโหลดไว้เหมือนเดิม
     overwrite: true, //ทับไฟลเดิมได้ไหมถ้าชื่อเดียวกัน ถ้าไม่ได้จะเป็นเลชเวอชั่น
