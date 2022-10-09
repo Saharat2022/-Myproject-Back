@@ -152,13 +152,14 @@ exports.updateProduct = async (req, res, next) => {
     if (!updateValue.subject) {
       throw new AppError("subject is invalid", 400);
     }
-
+    console.log(req.body, "body");
     const courseEdit = await Course.findOne({
       where: { id: id },
     });
 
     let oldCourseImg = courseEdit.courseImg;
     let oldCourseLink = courseEdit.courseLink;
+    console.log(oldCourseImg, "old");
 
     if (req.files.courseImg) {
       const secureUrl = await cloudinary.upload(
@@ -212,14 +213,16 @@ exports.updateProduct = async (req, res, next) => {
 
 exports.edit = async (req, res, next) => {
   const { id } = req.params;
+
   try {
     const Itemedit = await Course.findOne({
-      where: { id: id },
+      where: { id },
       attributes: { exclude: "subjectcourse" },
       include: [{ model: Category, as: "subjectcourse" }],
     });
+
     if (!Itemedit) {
-      throw new AppError("Not Found", 400);
+      throw new AppError("Not Found id", 400);
     }
     res.status(200).json({ Itemedit });
   } catch (err) {

@@ -19,6 +19,9 @@ router.post(
 );
 
 router.get("/allItem", adminController.newItem);
+router.get("/allcategory", adminController.allcategory);
+
+router.get("/edit/:id", adminController.edit);
 
 router.patch(
   "/updateproduct/:id",
@@ -30,7 +33,5 @@ router.patch(
   adminController.updateProduct
 );
 
-router.get("/allcategory", adminController.allcategory);
-
-router.get("/edit/:id", adminController.edit);
+router.delete("/deleteItem/:id", authenticate, adminController.deleteItem);
 module.exports = router;
