@@ -18,7 +18,6 @@ exports.register = async (req, res, next) => {
       firstName,
       lastName,
       email,
-      profileImage,
       phone,
     } = req.body;
 
@@ -48,6 +47,9 @@ exports.register = async (req, res, next) => {
     if (!email) {
       throw new AppError("email is require", 400);
     }
+    //if (!req.profileImage) {
+    //  req.profileImage = null;
+    //}
     const isEmail = validator.isEmail(email + "");
     const isPhone = validator.isMobilePhone(phone + "");
     if (isEmail && isPhone) {
@@ -60,6 +62,7 @@ exports.register = async (req, res, next) => {
         lastName,
         email,
         phone,
+        profileImage: null,
       });
       console.log(user);
       const token = gentoken({ id: user.id });

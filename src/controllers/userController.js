@@ -29,7 +29,11 @@ exports.updateUser = async (req, res, next) => {
     if (!isCorrect) {
       throw new AppError("password is invalid", 400);
     }
+
     if (isCorrect) {
+      if (!req.files.profileImage) {
+        updateValue.profileImage = null;
+      }
       if (req.files.profileImage) {
         const profileImage = req.user.profileImage;
 

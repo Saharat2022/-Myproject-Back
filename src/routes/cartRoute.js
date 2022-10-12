@@ -1,7 +1,7 @@
 const express = require("express");
 const authenticate = require("../middlewares.js/authenticate");
 const upload = require("../middlewares.js/upload");
-const adminController = require("../controllers/adminController");
+const cartController = require("../controllers/cartController");
 
 const router = express.Router();
 
@@ -9,29 +9,10 @@ const router = express.Router();
 //upload.fields จะถูกเก้บไว้ในเครื่อง + path รูปอยู่ที่ req.files
 //maxCount : ส่งมาได้กี่รูป
 router.post(
-  "/createproduct",
+  "/createorder",
   authenticate,
-  upload.fields([
-    { name: "courseImg", maxCount: 1 },
-    { name: "courseLink", maxCount: 1 },
-  ]),
-  adminController.createProduct
+  upload.fields([{ name: "slipPayment", maxCount: 1 }]),
+  cartController.createOrder
 );
 
-router.get("/allItem", adminController.newItem);
-router.get("/allcategory", adminController.allcategory);
-
-router.get("/edit/:id", authenticate, adminController.edit);
-
-router.patch(
-  "/updateproduct/:id",
-  authenticate,
-  upload.fields([
-    { name: "courseImg", maxCount: 1 },
-    { name: "courseLink", maxCount: 1 },
-  ]),
-  adminController.updateProduct
-);
-
-router.delete("/deleteItem/:id", authenticate, adminController.deleteItem);
 module.exports = router;

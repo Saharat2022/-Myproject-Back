@@ -14,7 +14,7 @@ exports.createProduct = async (req, res, next) => {
       (!createValue.descriptionCourse ||
         !createValue.descriptionCourse.trim()) &&
       (!createValue.priceProduct || !createValue.priceProduct.trim()) &&
-      (!createValue.courseLink || !createValue.courseLink.trim()) &&
+      // (!createValue.courseLink || !createValue.courseLink.trim()) &&
       !req.files
     ) {
       throw new AppError("Data is required", 400);
@@ -61,6 +61,9 @@ exports.createProduct = async (req, res, next) => {
 
     if (!createValue.type) {
       createValue.type = "offline";
+    }
+    if (!createValue.courseLink) {
+      createValue.courseLink = null;
     }
 
     const newCourse = await Course.create({
@@ -140,7 +143,6 @@ exports.updateProduct = async (req, res, next) => {
       (!updateValue.descriptionCourse ||
         !updateValue.descriptionCourse.trim()) &&
       (!updateValue.priceProduct || !updateValue.priceProduct.trim()) &&
-      (!updateValue.courseLink || !updateValue.courseLink.trim()) &&
       !req.files
     ) {
       throw new AppError("Data is required", 400);
@@ -148,7 +150,7 @@ exports.updateProduct = async (req, res, next) => {
     if (!typeof updateValue.priceProduct === "number") {
       throw new AppError("Data is invalid", 400);
     }
-    console.log(updateValue);
+    // console.log(updateValue);
     if (!updateValue.subject) {
       throw new AppError("subject is invalid", 400);
     }
@@ -184,19 +186,21 @@ exports.updateProduct = async (req, res, next) => {
     });
 
     await Course.update(
-      {
-        nameProduct: updateValue.nameProduct,
-        descriptionCourse: updateValue.descriptionCourse,
-        priceProduct: updateValue.priceProduct,
-        descriptionLast: updateValue.descriptionLast,
-        courseImg: updateValue.courseImg,
-        courseLink: updateValue.courseLink,
-        type: updateValue.type,
-        inventory: updateValue.inventory,
-        CategoryId: categoryId.id,
-      },
+      { ...updateValue, CategoryId: categoryId.id },
+      // {
+      //   nameProduct: updateValue.nameProduct,
+      //   descriptionCourse: updateValue.descriptionCourse,
+      //   priceProduct: updateValue.priceProduct,
+      //   descriptionLast: updateValue.descriptionLast,
+      //   courseImg: updateValue.courseImg,
+      //   courseLink: updateValue.courseLink,
+      //   type: updateValue.type,
+      //   inventory: updateValue.inventory,
+      //   CategoryId: categoryId.id,
+      // },
       { where: { id: id } }
     );
+    console.log("object", updateValue.courseLink);
 
     //findone อีกรอบ, reload()
     const courseUpdate = await Course.findAll({
