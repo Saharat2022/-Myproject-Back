@@ -1,14 +1,14 @@
-const cloudinary = require("../utils/cloudinary");
-const { Order, OrderItem, Course } = require("../models");
+const cloudinary = require('../utils/cloudinary');
+const { Order, OrderItem, Course } = require('../models');
 
-const AppError = require("../utils/appError");
+const AppError = require('../utils/appError');
 //fs ทำเกี่ยวกับไฟล
-const fs = require("fs");
-const { Order_status_one, Order_status_two } = require("../config/constants");
+const fs = require('fs');
+const { Order_status_one, Order_status_two } = require('../config/constants');
 
 exports.createOrder = async (req, res, next) => {
-  if (req.user.role === "admin") {
-    throw new AppError("password is invalid", 400);
+  if (req.user.role === 'admin') {
+    throw new AppError('password is invalid', 400);
   }
   try {
     const updateValue = req.body;
@@ -18,9 +18,9 @@ exports.createOrder = async (req, res, next) => {
     //ต้องเอาpath: secure_url ซึ่งจะอยู่บนคาว ไปเก็บไว้ที่ DB
     //ขึ้นคาว
     // console.log(updateValue);
-    console.log(req.user);
-    if (typeof updateValue.payment !== "string") {
-      throw new AppError("payment is invalid", 400);
+
+    if (typeof updateValue.payment !== 'string') {
+      throw new AppError('payment is invalid', 400);
     }
 
     if (req.files.slipPayment) {
@@ -42,7 +42,8 @@ exports.createOrder = async (req, res, next) => {
     }
     const item = await Order.create({
       codePurchase:
-        new Date().getTime() + "" + Math.round(Math.random() * 100000000),
+        // new Date().getTime() + "" + Math.round(Math.random() * 100000000),
+        updateValue.codePurchase,
       payment: updateValue.payment,
       slipPayment: updateValue.slipPayment,
       status: updateValue.status,
@@ -64,12 +65,12 @@ exports.createOrder = async (req, res, next) => {
 
     const orders = await Order.findAll({
       where: { id: item.id },
-      attributes: { exclude: "userId" },
+      attributes: { exclude: 'userId' },
       include: [
         {
           model: OrderItem,
-          as: "Itemeachorder",
-          include: [{ model: Course, as: "Detailorder" }],
+          as: 'Itemeachorder',
+          include: [{ model: Course, as: 'Detailorder' }],
         },
       ],
     });
